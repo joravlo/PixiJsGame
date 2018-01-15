@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+
+    <meta charset="utf-8">
+    <title></title>
+    <script src="pixi.min.js"></script>
+
+  </head>
+  <body>
+
+    <script>
+
+      // Instanciamos y visualizamos el contenedor canvas
+      var renderer = PIXI.autoDetectRenderer(256, 256);
+      document.body.appendChild(renderer.view);
+      var stage = new PIXI.Container();
+
+      //Instanciamos y cargamos la imagen
+      PIXI.loader
+          .add("img/bs.png")
+          .load(setup);
+
+      function setup(){
+        var bart = new PIXI.Sprite(PIXI.loader.resources["img/bs.png"].texture);
+        stage.addChild(bart);
+        renderer.render(stage);
+      }
+
+    </script>
+
+  </body>
+</html>
