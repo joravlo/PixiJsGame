@@ -28,7 +28,7 @@
 
       // Inicializamos
       var basicText;
-      var i = 0;
+      var time = 0;
       var tPAUSA = 80;
       var tecla = null;
       var PAUSA = false;
@@ -49,61 +49,63 @@
     		});
 
         if (PAUSA){
+
   				contexto.fillStyle = "white";
   				contexto.textAlign='center';
   				contexto.font="34px Arial";
   				contexto.fillText('PAUSA',width/2,height/2);
           PAUSA = false;
-  			}else{
-          maloCreate();
-        }
 
+  			}else{
+          
+          timer();
+          maloCreate();
+
+        }
       }
 
       function maloCreate(){
         var malo = PIXI.Sprite.fromImage('img/bs.png');
-
         // Posicionamos el elemento
         malo.x = render.screen.width + malo.width;
         malo.y = render.screen.height - malo.height;
-
         // Lo añadimos al canvas
         tilingSprite.addChild(malo);
-
         // Funcion en bucle
         render.ticker.add(function() {
-
             // Velocidad movimiento del elemeto
             tilingSprite.tilePosition.x -= 2;
             malo.x -= 2;
 
-            /*if (malo.x < -900) {
-              malo.x = app.screen.width + 200;
-              app.stage.removeChild(enemgo.view); }*/
-
+            // Colisión
             if (malo.x < 200) {
-              boom.x = malo.x;
-              boom.y = malo.y;
-              malo.x = 1200;
-              explosionCreate();
+              boom.x = malo.x; boom.y = malo.y;
+              //tilingSprite.removeChild(malo);
+              malo.x = render.screen.width + Math.floor((Math.random() * 1200) + 1);
+              console.log(malo.x);
+              boomCreate();
               //render.stop();
             }
         });
       }
 
-      function explosionCreate(){
-        var boom = PIXI.Sprite.fromImage('img/boom1.png');
+      function boomCreate(){
+        boom = PIXI.Sprite.fromImage('img/boom1.png');
         tilingSprite.addChild(boom);
+        setTimeout("boomDestroy()",1000);
+      }
+
+      function boomDestroy(){
+        tilingSprite.removeChild(boom);
       }
 
       function timer() {
           tilingSprite.removeChild(basicText);
-          i = i + 1;
-          basicText = new PIXI.Text(i);
+          time = time + 1;
+          basicText = new PIXI.Text(time);
           tilingSprite.addChild(basicText);
           setTimeout("timer()",1000);
       }
-      timer();
 
     </script>
 
