@@ -82,8 +82,9 @@
               app.stage.removeChild(enemgo.view); }*/
 
             if (malo.x < 200) {
-              boom.x = malo.x; boom.y = malo.y;
-              tilingSprite.removeChild(malo);
+              boom.x = malo.x;
+              boom.y = malo.y;
+              malo.x = 1200;
               explosionCreate();
               //render.stop();
             }
