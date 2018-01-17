@@ -9,7 +9,7 @@ var Container = PIXI.Container,
     jump = false,
     keyup = 38;
 
-var basicText;
+var textCount;
 var time = 0;
 var keyPause = 80;
 var tecla = null;
@@ -127,7 +127,7 @@ function timer() {
   // Pintamos el contador
   time++;
   tilingSprite.removeChild(textCount);
-  let textCount = new PIXI.Text(time, style);
+  textCount = new PIXI.Text(time, style);
   tilingSprite.addChild(textCount);
   setTimeout("timer()",1000);
 
