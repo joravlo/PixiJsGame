@@ -68,11 +68,10 @@ function setup(){
   });
 
   if(pause){
-		contexto.fillStyle = "white";
-		contexto.textAlign='center';
-		contexto.font="34px Arial";
-		contexto.fillText('PAUSA',width/2,height/2);
+    let miText = new PIXI.Text("PAUSE");
+    tilingSprite.addChild(basicText);
     pause = false;
+    render.stop();
 	}else{
     timer();
     enemyCreate();
@@ -106,46 +105,8 @@ function addMegaMan() {
   render.render(stage);
 }
 
-function enemyCreate(){
-  let enemy = PIXI.Sprite.fromImage('img/bs.png');
-  // Posicionamos el elemento
-  enemy.x = render.screen.width + enemy.width;
-  enemy.y = render.screen.height - enemy.height;
-  // Lo añadimos al canvas
-  tilingSprite.addChild(enemy);
-  // Funcion en bucle
-  render.ticker.add(function() {
-      // Velocidad movimiento del elemeto
-      tilingSprite.tilePosition.x -= 1;
-      enemy.x -= 2;
-
-      // Comprueba colisión
-      if (enemy.x < 200) {
-        boom.x = enemy.x; boom.y = enemy.y;
-        //tilingSprite.removeChild(enemy);
-        // El enemigo se desplaza a una posición aleatoria más allá del ancho de la pantalla
-        //enemy.x = Math.round((Math.random() * 200)) + render.screen.width;
-        enemy.x = rndIntFromInterval(render.screen.width, 600);
-        console.log(enemy.x);
-        boomCreate();
-        //render.stop();
-      }
-  });
-}
-
-// Creamos el efecto de la colisión con un tiempo de espera de 1s
-function boomCreate(){
-  boom = PIXI.Sprite.fromImage('img/boom1.png');
-  tilingSprite.addChild(boom);
-  setTimeout("boomDestroy()",1000);
-}
-
-// Eliminamos el elemento colisión
-function boomDestroy(){
-  tilingSprite.removeChild(boom);
-}
-
 function timer() {
+
   // Estilo del contador
   let style = new PIXI.TextStyle({
       fontFamily: 'Arial',
@@ -163,11 +124,11 @@ function timer() {
       wordWrapWidth: 440
   });
 
-  // Dibujamos el contador
-  tilingSprite.removeChild(basicText);
-  time = time + 1;
-  basicText = new PIXI.Text(time, style);
-  tilingSprite.addChild(basicText);
+  // Pintamos el contador
+  time++;
+  tilingSprite.removeChild(textCount);
+  let textCount = new PIXI.Text(time, style);
+  tilingSprite.addChild(textCount);
   setTimeout("timer()",1000);
 
 }
