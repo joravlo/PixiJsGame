@@ -14,6 +14,8 @@ function enemyCreate(){
 
       // Velocidad movimiento de los elemetos
       tilingSprite.tilePosition.x -= 1;
+      tilingSprite2.tilePosition.x -= 2;
+      tilingSprite3.tilePosition.x -= 1.5;
       enemy.x -= 2;
       // Movemos el elemento a una posición aleatoria entre los 900 y 1200px
       if (enemy.x < -enemy.width)

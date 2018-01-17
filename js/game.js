@@ -23,9 +23,11 @@ var megamanTexture;
 const WIDTH_SCREEN = 900;
 const HEIGHT_SCREEN = 500;
 const J1_X = 15; // Posición x del jugador 1 (Megaman) en % de pantalla
-const GRAVEDAD = 600;
-const VELOCIDAD_J1 = 300*Math.sin((-75* Math.PI)/180); // (Modificar el primer número)
-var tInicial = 0;
+const GRAVEDAD = 9.8; // Aceleración (g)
+const VELOCIDAD_J1 = 60 * Math.sin((-75* Math.PI)/180); // Velocidad de salto vertical (Modificar SOLO el primer número)
+const DEFAULT_GAME_SPEED = 0.2; // Velocidad del tiempo en el juego
+
+var tFinal;
 var yInicial = 0;
 
 //Create the render
@@ -37,30 +39,8 @@ document.body.appendChild(render.view);
 //Create a container object
 var stage = new PIXI.Container();
 
-// Create texture background
-var textureBackground = PIXI.Texture.fromImage('img/fondo.jpg');
-var tilingSprite = new PIXI.extras.TilingSprite(
-    textureBackground,
-    render.screen.width=WIDTH_SCREEN,
-    render.screen.height=HEIGHT_SCREEN
-);
-var textureBackground2 = PIXI.Texture.fromImage('img/fondo1_capa1.png');
-var tilingSprite2 = new PIXI.extras.TilingSprite(
-    textureBackground2,
-    render.screen.width=WIDTH_SCREEN,
-    render.screen.height=HEIGHT_SCREEN
-);
-var textureBackground3 = PIXI.Texture.fromImage('img/fondo1_capa2.png');
-var tilingSprite3 = new PIXI.extras.TilingSprite(
-    textureBackground3,
-    render.screen.width=WIDTH_SCREEN,
-    render.screen.height=HEIGHT_SCREEN
-);
-
-//Add background to render
-render.stage.addChild(tilingSprite);
-tilingSprite.addChild(tilingSprite3);
-tilingSprite.addChild(tilingSprite2);
+// Load background
+loadBackgrounds();
 
 PIXI.loader
   .add("megaman", "img/MegaMan.png")
@@ -74,7 +54,7 @@ function setup(){
   document.addEventListener('keyup',function(event) {
     if(event.keyCode == keyup){
       jump = true;
-      tInicial = new Date().getTime();
+      tFinal = 0;
       yInicial = getYFromScreen();
     }else if(event.keyCode == keyPause){
       pause = true;
@@ -166,9 +146,11 @@ function gameLoop() {
     // Add in middle of page and increase 200px by the jump
     megaman.x = getXFromScreen(J1_X);
     //megaman.y = (render.screen.height - (megaman.height * 2)) - 200;
-    let t = (new Date().getTime()-tInicial)/1000;
-    megaman.y = yInicial+VELOCIDAD_J1*t-(0.5)*(-GRAVEDAD)*Math.pow(t, 2);
+    megaman.y = yInicial+VELOCIDAD_J1*tFinal-(0.5)*(-GRAVEDAD)*Math.pow(tFinal, 2);
     console.log(megaman.y);
+    // Se incrementa el tiempo
+    tFinal+=DEFAULT_GAME_SPEED;
+
     if(megaman.y>getYFromScreen()){
       jump = false;
       megaman.y = getYFromScreen();
