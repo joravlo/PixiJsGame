@@ -44,9 +44,23 @@ var tilingSprite = new PIXI.extras.TilingSprite(
     render.screen.width=WIDTH_SCREEN,
     render.screen.height=HEIGHT_SCREEN
 );
+var textureBackground2 = PIXI.Texture.fromImage('img/fondo1_capa1.png');
+var tilingSprite2 = new PIXI.extras.TilingSprite(
+    textureBackground2,
+    render.screen.width=WIDTH_SCREEN,
+    render.screen.height=HEIGHT_SCREEN
+);
+var textureBackground3 = PIXI.Texture.fromImage('img/fondo1_capa2.png');
+var tilingSprite3 = new PIXI.extras.TilingSprite(
+    textureBackground3,
+    render.screen.width=WIDTH_SCREEN,
+    render.screen.height=HEIGHT_SCREEN
+);
 
 //Add background to render
 render.stage.addChild(tilingSprite);
+tilingSprite.addChild(tilingSprite3);
+tilingSprite.addChild(tilingSprite2);
 
 PIXI.loader
   .add("megaman", "img/MegaMan.png")
@@ -117,6 +131,8 @@ function enemyCreate(){
   render.ticker.add(function() {
       // Velocidad movimiento del elemeto
       tilingSprite.tilePosition.x -= 1;
+      tilingSprite2.tilePosition.x -= 2;
+      tilingSprite3.tilePosition.x -= 1.6;
       enemy.x -= 2;
 
       // Comprueba colisión
