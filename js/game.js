@@ -27,14 +27,17 @@ const HEIGHT_SCREEN = 500;//window.innerHeight
 const GRAVEDAD = 9.8; // Aceleración (g)
 const INITIAL_SPEED_P1 = 60 * Math.sin((-75* Math.PI)/180); // Velocidad de salto vertical (Modificar SOLO el primer número)
 const DEFAULT_GAME_SPEED = 0.2; // Velocidad del tiempo en el juego
+const PLAYER_X = 15;
 const PLAYER1_MAX_X = 15;
 const PLAYER1_MIN_X = 15;
 
-var player1_vI = INITIAL_SPEED_P1;
-var player1_X = 15; // Posición x del jugador 1 (Megaman) en % de pantalla
-var player1_a = 0; // Aceleración adicional del salto
-var tFinal;
-var yInicial = 0;
+/*Variables de la parábola de salto*/
+var player1_vy = INITIAL_SPEED_P1; // Velocidad inicial del personaje en el eje y
+var player1_X = PLAYER_X; // Posición x del jugador 1 (Megaman) en % de pantalla
+var player1_a = 0; // Aceleración adicional en la parábola de salto (Valor negativo para incrementar salto)
+var tFinal; // Tiempo en el salto
+var yInicial = 0; // Posición inicial
+var jumpBoost = 0; // Relentiza la velocidad del tiempo en el salto (No se ha implementado)
 
 //Create the render
 var render = new PIXI.Application(WIDTH_SCREEN, HEIGHT_SCREEN);
@@ -65,23 +68,23 @@ function setup(){
       jump = true;
       tFinal = 0;
       yInicial = megaman.y-60;
-      player1_a = -5;
-      player1_vI = INITIAL_SPEED_P1;
-    }else if(event.keyCode == KEY_RIGHT){
-      if(player1_X<PLAYER1_MAX_X) player1_X+=1;
-    }else if(event.keyCode == KEY_LEFT){
-      if(player1_X>PLAYER1_MIN_X) player1_X-=1;
+      player1_a = -3;
+      player1_vy = INITIAL_SPEED_P1;
+    }else if(event.keyCode == KEY_RIGHT && player1_X<PLAYER1_MAX_X){
+      player1_X+=1;
+    }else if(event.keyCode == KEY_LEFT && player1_X>PLAYER1_MIN_X){
+      player1_X-=1;
     }else if(event.keyCode == KEY_PAUSE){
       pause = true;
     }
   });
 
   document.addEventListener('keyup',function(event) {
-    tFinal = 0;
-    yInicial = megaman.y;
+    //yInicial = megaman.y;
     player1_a = 0;
-    //megaman.y = yInicial+player1_vI*tFinal-(0.5)*(-(GRAVEDAD+player1_a))*Math.pow(tFinal, 2);
-    player1_vI = (megaman.y-yInicial+(0.5)*(-(GRAVEDAD+player1_a))*Math.pow(tFinal, 2))/(tFinal);
+    player1_vy = (megaman.y-yInicial+(0.5)*(-(GRAVEDAD+player1_a))*Math.pow(tFinal, 2))/(tFinal);
+    console.log("megaman.y "+megaman.y);
+    console.log("tFinal "+tFinal);
   });
 
   if(pause){
@@ -181,8 +184,7 @@ function gameLoop() {
   if (jump) {
     // Add in screen and calcule y
     megaman.x = getXFromScreen(player1_X);
-    megaman.y = yInicial+player1_vI*tFinal-(0.5)*(-(GRAVEDAD+player1_a))*Math.pow(tFinal, 2);
-    console.log(player1_a);
+    megaman.y = yInicial+player1_vy*tFinal-(0.5)*(-(GRAVEDAD+player1_a))*Math.pow(tFinal, 2);
     //console.log(megaman.y);
     // Se incrementa el tiempo
     tFinal+=DEFAULT_GAME_SPEED;
@@ -192,7 +194,7 @@ function gameLoop() {
       megaman.y = getYFromScreen();
     }
   } else {
-    // Add in middle of page
+    // Add in middle of screen
     megaman.x = getXFromScreen(player1_X);
 
     megaman.y = getYFromScreen();
