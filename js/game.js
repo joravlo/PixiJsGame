@@ -20,8 +20,8 @@ var megaman;
 var run = []; //Array with images of spritesheet
 var megamanTexture;
 
-const WIDTH_SCREEN = 900;
-const HEIGHT_SCREEN = 500;
+const WIDTH_SCREEN = 900;//window.innerWidth
+const HEIGHT_SCREEN = 500;//window.innerHeight
 const J1_X = 15; // Posición x del jugador 1 (Megaman) en % de pantalla
 const GRAVEDAD = 9.8; // Aceleración (g)
 const VELOCIDAD_J1 = 60 * Math.sin((-75* Math.PI)/180); // Velocidad de salto vertical (Modificar SOLO el primer número)
@@ -32,6 +32,9 @@ var yInicial = 0;
 
 //Create the render
 var render = new PIXI.Application(WIDTH_SCREEN, HEIGHT_SCREEN);
+/*window.addEventListener("resize", function(){
+  app.render.resize(window.innerWidth,window.innerHeight);
+})*/
 
 //Add the canvas to the HTML document
 document.body.appendChild(render.view);
@@ -52,10 +55,10 @@ PIXI.loader
 function setup(){
   //Key up pressed megaman jump
   document.addEventListener('keyup',function(event) {
-    if(event.keyCode == keyup){
+    if(event.keyCode == keyup && !jump){
       jump = true;
       tFinal = 0;
-      yInicial = getYFromScreen();
+      yInicial = megaman.y-60;
     }else if(event.keyCode == keyPause){
       pause = true;
     }
@@ -143,9 +146,8 @@ function gameLoop() {
   tilingSprite.removeChild(megaman);
   megaman = new Sprite(megamanTexture);
   if (jump) {
-    // Add in middle of page and increase 200px by the jump
+    // Add in screen and calcule y
     megaman.x = getXFromScreen(J1_X);
-    //megaman.y = (render.screen.height - (megaman.height * 2)) - 200;
     megaman.y = yInicial+VELOCIDAD_J1*tFinal-(0.5)*(-GRAVEDAD)*Math.pow(tFinal, 2);
     console.log(megaman.y);
     // Se incrementa el tiempo
