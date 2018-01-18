@@ -126,8 +126,21 @@ function timer() {
   tilingSprite.removeChild(textCount);
   textCount = new PIXI.Text(time, style);
   tilingSprite.addChild(textCount);
+  saveTimer(time);
   setTimeout("timer()",1000);
 
+}
+
+function saveTimer(pts){
+  // Save the score in the localStorage
+  if (localStorage.score) {
+    if (pts > parseInt(localStorage.score)) {
+      localStorage.score = pts;
+    }
+  }else{
+    localStorage.score = pts;
+  }
+  console.log(pts);
 }
 
 // GameLoop for change the frame from MegaMan
@@ -149,7 +162,7 @@ function gameLoop() {
     // Add in screen and calcule y
     megaman.x = getXFromScreen(J1_X);
     megaman.y = yInicial+VELOCIDAD_J1*tFinal-(0.5)*(-GRAVEDAD)*Math.pow(tFinal, 2);
-    console.log(megaman.y);
+    //console.log(megaman.y);
     // Se incrementa el tiempo
     tFinal+=DEFAULT_GAME_SPEED;
 
