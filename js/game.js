@@ -11,7 +11,9 @@ var Container = PIXI.Container,
 
 var textCount;
 var time = 0;
-var keyPause = 80;
+const KEY_PAUSE = 80;
+const KEY_RIGHT = 39;
+const KEY_LEFT = 37;
 var tecla = null;
 var pause = false;
 var enemy = { width: 200, height: 200, x: 0, y: 0 };
@@ -22,11 +24,15 @@ var megamanTexture;
 
 const WIDTH_SCREEN = 900;//window.innerWidth
 const HEIGHT_SCREEN = 500;//window.innerHeight
-const J1_X = 15; // Posición x del jugador 1 (Megaman) en % de pantalla
 const GRAVEDAD = 9.8; // Aceleración (g)
-const VELOCIDAD_J1 = 60 * Math.sin((-75* Math.PI)/180); // Velocidad de salto vertical (Modificar SOLO el primer número)
+const INITIAL_SPEED_P1 = 60 * Math.sin((-75* Math.PI)/180); // Velocidad de salto vertical (Modificar SOLO el primer número)
 const DEFAULT_GAME_SPEED = 0.2; // Velocidad del tiempo en el juego
+const PLAYER1_MAX_X = 15;
+const PLAYER1_MIN_X = 15;
 
+var player1_vI = INITIAL_SPEED_P1;
+var player1_X = 15; // Posición x del jugador 1 (Megaman) en % de pantalla
+var player1_a = 0; // Aceleración adicional del salto
 var tFinal;
 var yInicial = 0;
 
@@ -54,14 +60,28 @@ PIXI.loader
 
 function setup(){
   //Key up pressed megaman jump
-  document.addEventListener('keyup',function(event) {
+  document.addEventListener('keydown',function(event) {
     if(event.keyCode == keyup && !jump){
       jump = true;
       tFinal = 0;
       yInicial = megaman.y-60;
-    }else if(event.keyCode == keyPause){
+      player1_a = -5;
+      player1_vI = INITIAL_SPEED_P1;
+    }else if(event.keyCode == KEY_RIGHT){
+      if(player1_X<PLAYER1_MAX_X) player1_X+=1;
+    }else if(event.keyCode == KEY_LEFT){
+      if(player1_X>PLAYER1_MIN_X) player1_X-=1;
+    }else if(event.keyCode == KEY_PAUSE){
       pause = true;
     }
+  });
+
+  document.addEventListener('keyup',function(event) {
+    tFinal = 0;
+    yInicial = megaman.y;
+    player1_a = 0;
+    //megaman.y = yInicial+player1_vI*tFinal-(0.5)*(-(GRAVEDAD+player1_a))*Math.pow(tFinal, 2);
+    player1_vI = (megaman.y-yInicial+(0.5)*(-(GRAVEDAD+player1_a))*Math.pow(tFinal, 2))/(tFinal);
   });
 
   if(pause){
@@ -140,7 +160,7 @@ function saveTimer(pts){
   }else{
     localStorage.score = pts;
   }
-  console.log(pts);
+  //console.log(pts);
 }
 
 // GameLoop for change the frame from MegaMan
@@ -160,8 +180,9 @@ function gameLoop() {
   megaman = new Sprite(megamanTexture);
   if (jump) {
     // Add in screen and calcule y
-    megaman.x = getXFromScreen(J1_X);
-    megaman.y = yInicial+VELOCIDAD_J1*tFinal-(0.5)*(-GRAVEDAD)*Math.pow(tFinal, 2);
+    megaman.x = getXFromScreen(player1_X);
+    megaman.y = yInicial+player1_vI*tFinal-(0.5)*(-(GRAVEDAD+player1_a))*Math.pow(tFinal, 2);
+    console.log(player1_a);
     //console.log(megaman.y);
     // Se incrementa el tiempo
     tFinal+=DEFAULT_GAME_SPEED;
@@ -172,7 +193,7 @@ function gameLoop() {
     }
   } else {
     // Add in middle of page
-    megaman.x = getXFromScreen(J1_X);
+    megaman.x = getXFromScreen(player1_X);
 
     megaman.y = getYFromScreen();
   }
