@@ -29,3 +29,11 @@ function loadBackgrounds(){
 	tilingSprite.addChild(tilingSprite3);
 	tilingSprite.addChild(tilingSprite2);
 }
+
+/*Move background images*/
+function moveBackground() {
+  // Velocidad movimiento de los elemetos
+  tilingSprite.tilePosition.x -= 1;
+  tilingSprite2.tilePosition.x -= 2;
+  tilingSprite3.tilePosition.x -= 1.5;
+}

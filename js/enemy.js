@@ -58,10 +58,3 @@ function boomCreate(){
 function boomDestroy(){
   tilingSprite.removeChild(boom);
 }
-
-function moveBackground() {
-  // Velocidad movimiento de los elemetos
-  tilingSprite.tilePosition.x -= 1;
-  tilingSprite2.tilePosition.x -= 2;
-  tilingSprite3.tilePosition.x -= 1.5;
-}

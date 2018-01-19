@@ -9,7 +9,7 @@ function getYFromScreen(){
 }
 
 function getYTextureFromScreen(spriteTexture, scale){
-	return render.screen.height - (enemyTexture.frame.height * scale);
+	return render.screen.height - (spriteTexture.frame.height * scale);
 }
 
 // Devuelve un entero aleatorio entre un número inicial y el intervalo de posibles resultados

@@ -61,7 +61,7 @@ loader
   .load(setup);
 
 function setup(){
-  //Key up pressed megaman jump
+  // Event listeners
   document.addEventListener('keydown',function(event) {
     if(event.keyCode == keyup && !jump){
       jump = true;
@@ -77,7 +77,6 @@ function setup(){
       pause = true;
     }
   });
-
   document.addEventListener('keyup',function(event) {
     //yInicial = megaman.y;
     player1_a = 0;
@@ -125,7 +124,6 @@ function addMegaMan() {
 }
 
 function timer() {
-
   // Estilo del contador
   let style = new PIXI.TextStyle({
       fontFamily: 'Arial',
@@ -207,12 +205,4 @@ function gameLoop() {
   megaman.scale.set(2,2);
   tilingSprite.addChild(megaman);
   render.render(stage);
-}
-
-//Function for move background
-function moveBackground() {
-//Speed ​​of movement of the elements
-  tilingSprite.tilePosition.x -= 1;
-  tilingSprite2.tilePosition.x -= 2;
-  tilingSprite3.tilePosition.x -= 1.5;
 }
