@@ -1,6 +1,4 @@
-var Container = PIXI.Container,
-    autoDetectRenderer = PIXI.autoDetectRenderer,
-    loader = PIXI.loader,
+var loader = PIXI.loader,
     resources = PIXI.loader.resources,
     Sprite = PIXI.Sprite,
     maxFrame = 4, //Max Frame run
@@ -16,11 +14,11 @@ const KEY_RIGHT = 39;
 const KEY_LEFT = 37;
 var tecla = null;
 var pause = false;
-var enemy = { width: 200, height: 200, x: 0, y: 0 };
-var boom = { width: 200, height: 200, x: 0, y: 0 };
+
 var megaman;
 var run = []; //Array with images of spritesheet
 var megamanTexture;
+
 
 const WIDTH_SCREEN = 900;//window.innerWidth
 const HEIGHT_SCREEN = 500;//window.innerHeight
@@ -54,8 +52,9 @@ var stage = new PIXI.Container();
 // Load background
 loadBackgrounds();
 
-PIXI.loader
+loader
   .add("megaman", "img/MegaMan.png")
+  .add("enemy01","img/enemy01.png")
   .add("img/bs.png")
   .add('img/fondo.jpg')
   .add('img/boom1.png')
@@ -94,7 +93,7 @@ function setup(){
     render.stop();
 	}else{
     timer();
-    enemyCreate();
+    addEnemy();
     addMegaMan();
     gameLoop();
   }
@@ -169,6 +168,9 @@ function saveTimer(pts){
 // GameLoop for change the frame from MegaMan
 function gameLoop() {
   var f = requestAnimationFrame(gameLoop);
+
+  moveBackground();
+  enemyCreate();
   // If jump set frame 5. Else alternate first four frames
   if (jump) {
     af = 5;
@@ -195,7 +197,8 @@ function gameLoop() {
     }
   } else {
     // Add in middle of screen
-    megaman.x = getXFromScreen(player1_X);
+    // megaman.x = getXFromScreen(player1_X);
+    megaman.x += getXFromScreen(player1_X);
 
     megaman.y = getYFromScreen();
   }
@@ -204,4 +207,12 @@ function gameLoop() {
   megaman.scale.set(2,2);
   tilingSprite.addChild(megaman);
   render.render(stage);
+}
+
+//Function for move background
+function moveBackground() {
+//Speed ​​of movement of the elements
+  tilingSprite.tilePosition.x -= 1;
+  tilingSprite2.tilePosition.x -= 2;
+  tilingSprite3.tilePosition.x -= 1.5;
 }
