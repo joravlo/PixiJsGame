@@ -205,4 +205,7 @@ function gameLoop() {
   megaman.scale.set(2,2);
   tilingSprite.addChild(megaman);
   render.render(stage);
+
+  if (collision(megaman,enemy))
+  window.location="index.html";
 }

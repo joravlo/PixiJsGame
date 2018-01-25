@@ -58,3 +58,33 @@ function boomCreate(){
 function boomDestroy(){
   tilingSprite.removeChild(boom);
 }
+
+function collision(m, e) {
+
+  let col, combinedHalfWidths, combinedHalfHeights, vx, vy;
+  col = false;
+
+  // center points of sprite
+  m.centerX = m.x + m.width / 2; m.centerY = m.y + m.height / 2;
+  e.centerX = e.x + e.width / 2; e.centerY = e.y + e.height / 2;
+
+  // center points, widths and heights of sprits
+  m.halfWidth = m.width / 2; m.halfHeight = m.height / 2;
+  e.halfWidth = e.width / 2; e.halfHeight = e.height / 2;
+
+  // distance between the sprites
+  vx = m.centerX - e.centerX;
+  vy = m.centerY - e.centerY;
+
+  //Figure out the combined half-widths and half-heights
+  combinedHalfWidths  = m.halfWidth + e.halfWidth;
+  combinedHalfHeights = m.halfHeight + e.halfHeight;
+
+
+  if (Math.abs(vx) < combinedHalfWidths) {
+    if (Math.abs(vy) < combinedHalfHeights) col = true;
+    else col = false;
+  } else { col = false; }
+
+  return col;
+}
