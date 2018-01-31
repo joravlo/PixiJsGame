@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>Proyecto canvas</title>
+    <link rel="shortcut icon" type="image/png" href="img/icon.png" />
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <script src="https://pixijs.download/v4.5.3/pixi.min.js"></script>
     <!--<script src="pixi.min.js"></script>-->
@@ -13,7 +14,13 @@
       <script type="text/javascript" src="js/background.js"></script>
       <script type="text/javascript" src="js/enemy.js"></script>
       <script type="text/javascript" src="js/game.js"></script>
-      <audio id="audio" autoplay src="music/menu.mp3"></audio>
+      <audio volume="0.6" id="audio" autoplay>
+          <source src="music/song01.mp3" type="audio/mp3">
+      </audio>
+      <script type="text/javascript">
+        // Configuración AUDIO
+        document.getElementById("audio").volume = 0.6;
+      </script>
     </div>
   </body>
 </html>

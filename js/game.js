@@ -20,8 +20,8 @@ var run = []; //Array with images of spritesheet
 var megamanTexture;
 
 
-const WIDTH_SCREEN = 900;//window.innerWidth
-const HEIGHT_SCREEN = 500;//window.innerHeight
+const WIDTH_SCREEN = 900;
+const HEIGHT_SCREEN = 500;
 const GRAVEDAD = 9.8; // Aceleración (g)
 const INITIAL_SPEED_P1 = 60 * Math.sin((-75* Math.PI)/180); // Velocidad de salto vertical (Modificar SOLO el primer número)
 const DEFAULT_GAME_SPEED = 0.2; // Velocidad del tiempo en el juego
@@ -39,9 +39,6 @@ var jumpBoost = 0; // Relentiza la velocidad del tiempo en el salto (No se ha im
 
 //Create the render
 var render = new PIXI.Application(WIDTH_SCREEN, HEIGHT_SCREEN);
-/*window.addEventListener("resize", function(){
-  app.render.resize(window.innerWidth,window.innerHeight);
-})*/
 
 //Add the canvas to the HTML document
 document.body.appendChild(render.view);
@@ -81,8 +78,8 @@ function setup(){
     //yInicial = megaman.y;
     player1_a = 0;
     player1_vy = (megaman.y-yInicial+(0.5)*(-(GRAVEDAD+player1_a))*Math.pow(tFinal, 2))/(tFinal);
-    console.log("megaman.y "+megaman.y);
-    console.log("tFinal "+tFinal);
+    //console.log("megaman.y "+megaman.y);
+    //console.log("tFinal "+tFinal);
   });
 
   if(pause){
@@ -229,13 +226,13 @@ noSound.interactive = true;
 noSound.buttonMode = true;
 noSound.on('pointerdown', onClickNoSound);
 
+
 function onClickNoSound () {
     //Visible sprites
     noSound.visible=false;
     sound.visible=true;
     //Play audio
     document.getElementById("audio").muted=false;
-
 }
 
 sound.interactive = true;
