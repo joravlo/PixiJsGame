@@ -1,4 +1,13 @@
 body{
-	margin: 0;
+	margin: 0 auto;
 	width: 100%;
+	text-align: center;
+	background: url("../img/fondo_html.jpg") no-repeat center center fixed;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+div.canvas{
+	margin-top: 2%;
 }
