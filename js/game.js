@@ -207,3 +207,45 @@ function gameLoop() {
   if (collision(megaman,enemy))
   window.location="index.html";
 }
+//Create the Sound noSound sprites
+var sound = PIXI.Sprite.fromImage('img/Volumen.png');
+sound.x = 5;
+sound.y = 50;
+sound.scale.set(0.1,0.1);
+tilingSprite.addChild(sound);
+render.render(stage);
+
+
+var noSound = PIXI.Sprite.fromImage('img/NoVolumen.png');
+noSound.x = 5;
+noSound.y = 50;
+noSound.scale.set(0.1,0.1);
+tilingSprite.addChild(noSound);
+render.render(stage);
+noSound.visible=false;
+
+//OnClick Sound or NoSound
+noSound.interactive = true;
+noSound.buttonMode = true;
+noSound.on('pointerdown', onClickNoSound);
+
+function onClickNoSound () {
+    //Visible sprites
+    noSound.visible=false;
+    sound.visible=true;
+    //Play audio
+    document.getElementById("audio").muted=false;
+
+}
+
+sound.interactive = true;
+sound.buttonMode = true;
+sound.on('pointerdown', onClickSound);
+
+function onClickSound () {
+    //Visible sprites
+    sound.visible=false;
+    noSound.visible=true;
+    //Mute the audio
+    document.getElementById("audio").muted=true;
+}
