@@ -141,7 +141,6 @@ function timer() {
       wordWrapWidth: 440
   });
 
-  // Pintamos el contador
   time++;
   tilingSprite.removeChild(textCount);
   textCount = new PIXI.Text(time, style);
@@ -160,7 +159,6 @@ function saveTimer(pts){
   }else{
     localStorage.score = pts;
   }
-  //console.log(pts);
 }
 
 // GameLoop for change the frame from MegaMan

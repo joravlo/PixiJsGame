@@ -39,7 +39,7 @@ enemy = new Sprite(enemyTexture);
 enemy.x = enemyX - ENEMY_SPEED;
 enemy.y = getYTextureFromScreen(enemyTexture, ENMEY_SCALE);
 
-//If enemy disappears of screen set random width
+// If enemy disappears of screen set random width
 if (enemy.x < -enemyTexture.frame.height)
 enemy.x = Math.round((Math.random() * 1200)) + render.screen.width;
 
@@ -47,21 +47,9 @@ enemy.scale.set(ENMEY_SCALE,ENMEY_SCALE);
 tilingSprite.addChild(enemy);
 }
 
-// Creamos el efecto de la colisión con un tiempo de espera de 1s
-function boomCreate(){
-  boom = PIXI.Sprite.fromImage('img/boom1.png');
-  tilingSprite.addChild(boom);
-  render.stop();
-}
-
-// Eliminamos el elemento colisión
-function boomDestroy(){
-  tilingSprite.removeChild(boom);
-}
-
 function collision(m, e) {
 
-  let col, combinedHalfWidths, combinedHalfHeights, vx, vy;
+  let col, halfWidths, halfHeights, colX, colY;
   col = false;
 
   // center points of sprite
@@ -73,16 +61,17 @@ function collision(m, e) {
   e.halfWidth = e.width / 2; e.halfHeight = e.height / 2;
 
   // distance between the sprites
-  vx = m.centerX - e.centerX;
-  vy = m.centerY - e.centerY;
+  colX = m.centerX - e.centerX;
+  colY = m.centerY - e.centerY;
 
-  //Figure out the combined half-widths and half-heights
-  combinedHalfWidths  = m.halfWidth + e.halfWidth;
-  combinedHalfHeights = m.halfHeight + e.halfHeight;
+  // Figure out the combined half-widths and half-heights
+  halfWidths  = m.halfWidth + e.halfWidth;
+  halfHeights = m.halfHeight + e.halfHeight;
 
-
-  if (Math.abs(vx) < combinedHalfWidths) {
-    if (Math.abs(vy) < combinedHalfHeights) col = true;
+  // If the distance between the two objects X is less than half of both...
+  if (Math.abs(colX) < halfWidths) {
+    // And the distance between the two objects Y is less than half of both...
+    if (Math.abs(colY) < halfHeights) col = true;
     else col = false;
   } else { col = false; }
 
